@@ -42,6 +42,8 @@ namespace lab03_bai5
                         Socket client = server.Accept();
                         //listView1.Items.Add("Client is connected");
                         clientlist.Add(client);
+                        string str = "Client mới kết nối từ: " + client.RemoteEndPoint.ToString() + "\n";
+                        listView1.Items.Add(new ListViewItem(str));
                         Thread recieve_thr = new Thread(recieve);
                         recieve_thr.Start(client);
                     }

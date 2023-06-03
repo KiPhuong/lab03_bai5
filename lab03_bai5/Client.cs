@@ -9,6 +9,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace lab03_bai5
 {
@@ -19,25 +20,15 @@ namespace lab03_bai5
             InitializeComponent();
         }
 
-        IPEndPoint ipe = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 18000); // dia chi server;
+        IPEndPoint ipe = new IPEndPoint(IPAddress.Parse("192.168.83.198"), 18000); // dia chi server;
         Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
         void send(string s) // gui tin nhan
         {
-            if (s != textBox2.Text)
-            {
-                string ip = client.LocalEndPoint.ToString(); // lấy ip và port của client
-                string mess = s + " " + ip; // send thong bao cho server 
-                byte[] data = Encoding.UTF8.GetBytes(mess);
-                client.Send(data);
-            }
-            else
-            {
                 //s = textBox2.Text; message cần gửi
                 string mess = textBox1.Text + ": " + s; // format = name: mess
                 byte[] data = Encoding.UTF8.GetBytes(mess);
                 client.Send(data);
-            }
         }
 
         void recieve() // nhan tin nhan
@@ -58,7 +49,6 @@ namespace lab03_bai5
             }
         }
 
-
         private void button1_Click(object sender, EventArgs e) // button send
         {
             if (textBox2.Text != "")
@@ -78,7 +68,6 @@ namespace lab03_bai5
                 try
                 {
                     client.Connect(ipe);
-                    send("New client connected from: ");
                 }
                 catch
                 {
@@ -89,6 +78,7 @@ namespace lab03_bai5
                 listen.Start();
                 button2.Text = "Connected";
                 button2.Enabled = false;
+                textBox1.Enabled = false;
             }
             else MessageBox.Show("Vui lòng nhập tên!");
         }
@@ -98,6 +88,12 @@ namespace lab03_bai5
             string temp = textBox1.Text + " is disconnected";
             send(temp);
             Close();
+        }
+
+        private void button4_Click(object sender, EventArgs e) // button seclect file
+        {
+            Client_Send_File client_Send_File = new Client_Send_File();
+            client_Send_File.ShowDialog();
         }
     }
 }
