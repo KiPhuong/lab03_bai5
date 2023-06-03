@@ -30,6 +30,7 @@ namespace lab03_bai5
             OpenFileDialog openFileDialog = new OpenFileDialog();
             filename = openFileDialog.FileName;
             textBox1.Text = filename;
+
         }
 
         private void button2_Click(object sender, EventArgs e) //button send
