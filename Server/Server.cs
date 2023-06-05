@@ -82,6 +82,43 @@ namespace lab03_bai5
             }
         }
 
-        
+        public static void doChat(Socket clientSocket, string n)
+
+        {
+            Console.WriteLine("getting file....");
+            byte[] clientData = new byte[1024 * 5000];
+            int receivedBytesLen = clientSocket.Receive(clientData);
+            int fileNameLen = BitConverter.ToInt32(clientData, 0);
+            string fileName = Encoding.ASCII.GetString(clientData, 4, fileNameLen);
+            BinaryWriter bWrite = new BinaryWriter(File.Open(fileName + n, FileMode.Create));
+            bWrite.Write(clientData, 4 + fileNameLen, receivedBytesLen - 4 - fileNameLen);
+            bWrite.Close();
+            clientSocket.Close();
+
+            //[0]filenamelen[4]filenamebyte[*]filedata   
+
+        }
+        //static void metvl(string[] args)
+        //{
+        //    IPAddress ipAddress = IPAddress.Parse("192.168.1.7");
+
+        //    Console.WriteLine("Starting TCP listener...");
+
+        //    IPEndPoint ipEnd = new IPEndPoint(ipAddress, 3004);
+        //    Socket serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP); ;
+        //    serverSocket.Bind(ipEnd);
+
+        //    int counter = 0;
+        //    serverSocket.Listen(3004);
+        //    Console.WriteLine(" >> " + "Server Started");
+        //    while (true)
+        //    {
+        //        Socket clientSocket = serverSocket.Accept();
+        //        new Thread(delegate () {
+        //            doChat(clientSocket, Convert.ToString(counter));
+        //        }).Start();
+
+        //    }
+        //}
     }
 }

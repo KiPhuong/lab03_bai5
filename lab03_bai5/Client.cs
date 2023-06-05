@@ -49,7 +49,7 @@ namespace lab03_bai5
             }
         }
 
-        private void button1_Click(object sender, EventArgs e) // button send
+        private void button1_Click(object sender, EventArgs e) // button send message
         {
             if (textBox2.Text != "")
             {
@@ -90,10 +90,10 @@ namespace lab03_bai5
             Close();
         }
 
-        private void button4_Click(object sender, EventArgs e) // button seclect file
+        private void button4_Click(object sender, EventArgs e) // button send file
         {
             Client_Send_File client_Send_File = new Client_Send_File();
-            client_Send_File.ShowDialog();
+            client_Send_File.Show();
         }
     }
 }
