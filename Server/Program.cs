@@ -1,4 +1,4 @@
-namespace lab03_bai5
+namespace Server
 {
     internal static class Program
     {
@@ -11,7 +11,7 @@ namespace lab03_bai5
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Client());
+            Application.Run(new Form1());
         }
     }
 }

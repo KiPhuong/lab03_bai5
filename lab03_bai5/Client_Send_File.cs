@@ -25,7 +25,7 @@ namespace lab03_bai5
         string filename;
         string filepath;
 
-        private void button1_Click(object sender, EventArgs e) //button brownser
+        private void button1_Click(object sender, EventArgs e) //button browser
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             filename = openFileDialog.FileName;
