@@ -51,6 +51,7 @@ namespace lab03_bai5
             //}
             //filename = openFileDialog.FileName;
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.ShowDialog();
             path = openFileDialog.FileName;
             textBox1.Text = path;
         }
@@ -63,6 +64,7 @@ namespace lab03_bai5
                 //Console.WriteLine(files[0]);
                 sendfile(files[0]);
                 MessageBox.Show("Da gui file thanh cong");
+                this.Close();
             }
         }
     }

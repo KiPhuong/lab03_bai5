@@ -1,6 +1,6 @@
 ﻿namespace lab03_bai5
 {
-    partial class Server
+    partial class FServer
     {
         /// <summary>
         /// Required designer variable.
@@ -50,14 +50,14 @@
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.List;
             // 
-            // Server
+            // FServer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(484, 361);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.label1);
-            this.Name = "Server";
+            this.Name = "FServer";
             this.Text = "Server";
             this.Load += new System.EventHandler(this.Server_Load);
             this.ResumeLayout(false);

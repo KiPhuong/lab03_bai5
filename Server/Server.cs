@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -12,9 +13,9 @@ using System.Windows.Forms;
 
 namespace lab03_bai5
 {
-    public partial class Server : Form
+    public partial class FServer : Form
     {
-        public Server()
+        public FServer()
         {
             InitializeComponent();
         }
@@ -44,7 +45,7 @@ namespace lab03_bai5
                         clientlist.Add(client);
                         string str = "Client mới kết nối từ: " + client.RemoteEndPoint.ToString() + "\n";
                         listView1.Items.Add(new ListViewItem(str));
-                        Thread recieve_thr = new Thread(recieve);
+                        Thread recieve_thr = new Thread(receive);
                         recieve_thr.Start(client);
                     }
                 }
@@ -57,7 +58,7 @@ namespace lab03_bai5
             });
             listen.Start();
         }
-        void recieve(object obj) // hàm nhận message cùng với đó là gửi message đó cho các client còn lại.
+        void receive(object obj) // hàm nhận message cùng với đó là gửi message đó cho các client còn lại.
         {
             // Socket cli = obj as Socket;
             Socket cli = (Socket)obj;
@@ -68,11 +69,20 @@ namespace lab03_bai5
                     byte[] data = new byte[1024 * 200];
                     cli.Receive(data);
                     string mess = Encoding.UTF8.GetString(data);
-                    listView1.Items.Add(mess);
-                    foreach(Socket item in clientlist)
+                    if (mess[0] == '*')
                     {
-                        if (item != null && item != cli) item.Send(data);
+                        string[] newmess = mess.Split(new string[] { "*" }, StringSplitOptions.RemoveEmptyEntries);
+                        listView1.Items.Add(mess);
+                        foreach(Socket item in clientlist)
+                        {
+                            if (item != null && item != cli) item.Send(data);
+                        }
                     }
+                    else
+                    {
+                        doChat(cli);
+                    }
+                    
                 }
             }
             catch
@@ -82,22 +92,27 @@ namespace lab03_bai5
             }
         }
 
-        public static void doChat(Socket clientSocket, string n)
-
-        {
-            Console.WriteLine("getting file....");
-            byte[] clientData = new byte[1024 * 5000];
-            int receivedBytesLen = clientSocket.Receive(clientData);
-            int fileNameLen = BitConverter.ToInt32(clientData, 0);
-            string fileName = Encoding.ASCII.GetString(clientData, 4, fileNameLen);
-            BinaryWriter bWrite = new BinaryWriter(File.Open(fileName + n, FileMode.Create));
-            bWrite.Write(clientData, 4 + fileNameLen, receivedBytesLen - 4 - fileNameLen);
-            bWrite.Close();
-            clientSocket.Close();
-
+         void doChat(Socket clientSocket)
+         {
+            try
+            {
+                Console.WriteLine("getting file....");
+                byte[] clientData = new byte[1024 * 5000];
+                int receivedBytesLen = clientSocket.Receive(clientData);
+                int fileNameLen = BitConverter.ToInt32(clientData, 0);
+                string fileName = Encoding.ASCII.GetString(clientData, 4, fileNameLen);
+                BinaryWriter bWrite = new BinaryWriter(File.Open(fileName, FileMode.Create));
+                bWrite.Write(clientData, 4 + fileNameLen, receivedBytesLen - 4 - fileNameLen);
+                bWrite.Close();
+                clientSocket.Close();
+            }
+            catch
+            {
+                MessageBox.Show("lỗi");
+            }
             //[0]filenamelen[4]filenamebyte[*]filedata   
 
-        }
+         }
         //static void metvl(string[] args)
         //{
         //    IPAddress ipAddress = IPAddress.Parse("192.168.1.7");
